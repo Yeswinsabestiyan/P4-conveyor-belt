@@ -1,0 +1,134 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="conveyor_sorter_system">
+
+  <!-- ============================================================ -->
+  <!-- PARAMETERS -->
+  <!-- ============================================================ -->
+  <xacro:property name="belt_length" value="3.0"/>
+  <xacro:property name="belt_width" value="0.4"/>
+  <xacro:property name="belt_height" value="0.1"/>
+  <xacro:property name="belt_ground_clearance" value="0.5"/>
+
+  <!-- Arm positions (Layout matching image1.png) -->
+  <!-- Arm 1 (1st hand) on +Y side -->
+  <xacro:property name="arm1_x" value="0.8"/>
+  <xacro:property name="arm1_y" value="0.35"/>
+  <xacro:property name="arm_base_z" value="0.5"/>
+
+  <!-- Arm 2 (2nd hand) on -Y side -->
+  <xacro:property name="arm2_x" value="1.8"/>
+  <xacro:property name="arm2_y" value="-0.35"/>
+
+  <!-- Bin positions (Matching image1.png) -->
+  <!-- Red Bin ("box one") on +Y side beside Arm 1 -->
+  <xacro:property name="red_bin_x" value="0.8"/>
+  <xacro:property name="red_bin_y" value="0.75"/>
+  <xacro:property name="red_bin_z" value="0.25"/>
+
+  <!-- Blue Bin ("box two") on -Y side beside Arm 2 -->
+  <xacro:property name="blue_bin_x" value="1.8"/>
+  <xacro:property name="blue_bin_y" value="-0.75"/>
+  <xacro:property name="blue_bin_z" value="0.25"/>
+
+  <!-- Scrap Bin ("scrap boxes") at end of belt -->
+  <xacro:property name="scrap_bin_x" value="3.25"/>
+  <xacro:property name="scrap_bin_y" value="0.0"/>
+  <xacro:property name="scrap_bin_z" value="0.25"/>
+
+  <!-- ============================================================ -->
+  <!-- MATERIALS -->
+  <!-- ============================================================ -->
+  <material name="belt_grey">
+    <color rgba="0.3 0.3 0.3 1.0"/>
+  </material>
+  <material name="belt_black">
+    <color rgba="0.1 0.1 0.1 1.0"/>
+  </material>
+  <material name="arm_grey">
+    <color rgba="0.5 0.5 0.5 1.0"/>
+  </material>
+  <material name="arm_dark_grey">
+    <color rgba="0.3 0.3 0.3 1.0"/>
+  </material>
+  <material name="gripper_black">
+    <color rgba="0.1 0.1 0.1 1.0"/>
+  </material>
+  <material name="red_bin">
+    <color rgba="0.85 0.1 0.1 1.0"/>
+  </material>
+  <material name="blue_bin">
+    <color rgba="0.1 0.2 0.85 1.0"/>
+  </material>
+  <material name="scrap_bin">
+    <color rgba="0.45 0.45 0.45 1.0"/>
+  </material>
+  <material name="box_red">
+    <color rgba="1.0 0.0 0.0 1.0"/>
+  </material>
+  <material name="box_blue">
+    <color rgba="0.0 0.0 1.0 1.0"/>
+  </material>
+  <material name="box_black">
+    <color rgba="0.05 0.05 0.05 1.0"/>
+  </material>
+  <material name="support_metal">
+    <color rgba="0.65 0.65 0.65 1.0"/>
+  </material>
+
+  <!-- ============================================================ -->
+  <!-- WORLD / BASE LINK -->
+  <!-- ============================================================ -->
+  <link name="world"/>
+
+  <joint name="world_joint" type="fixed">
+    <parent link="world"/>
+    <child link="base_link"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+  </joint>
+
+  <link name="base_link">
+    <visual>
+      <geometry>
+        <box size="0.01 0.01 0.01"/>
+      </geometry>
+      <material name="support_metal"/>
+    </visual>
+  </link>
+
+  <!-- ============================================================ -->
+  <!-- CONVEYOR BELT -->
+  <!-- ============================================================ -->
+  <xacro:include filename="conveyor_belt.urdf.xacro"/>
+  <xacro:conveyor_belt
+    belt_length="${belt_length}"
+    belt_width="${belt_width}"
+    belt_height="${belt_height}"
+    belt_ground_clearance="${belt_ground_clearance}"
+    parent_link="base_link"/>
+
+  <!-- ============================================================ -->
+  <!-- ROBOT ARMS (base_z = pedestal height = belt height) -->
+  <!-- ============================================================ -->
+  <xacro:include filename="robot_arm.urdf.xacro"/>
+  <xacro:robot_arm arm_name="arm1" parent_link="base_link"
+                   x="${arm1_x}" y="${arm1_y}" base_z="${arm_base_z}"
+                   link_color="arm_grey" gripper_color="gripper_black"/>
+  <xacro:robot_arm arm_name="arm2" parent_link="base_link"
+                   x="${arm2_x}" y="${arm2_y}" base_z="${arm_base_z}"
+                   link_color="arm_grey" gripper_color="gripper_black"/>
+
+  <!-- ============================================================ -->
+  <!-- BINS (standing on the floor, z = 0) -->
+  <!-- ============================================================ -->
+  <xacro:include filename="bins.urdf.xacro"/>
+  <xacro:bin bin_name="red_bin" parent_link="base_link"
+             bin_x="${red_bin_x}" bin_y="${red_bin_y}" bin_z="0.0"
+             bin_color="red_bin" width="0.45" depth="0.45" height="0.3"/>
+  <xacro:bin bin_name="blue_bin" parent_link="base_link"
+             bin_x="${blue_bin_x}" bin_y="${blue_bin_y}" bin_z="0.0"
+             bin_color="blue_bin" width="0.45" depth="0.45" height="0.3"/>
+  <xacro:bin bin_name="scrap_bin" parent_link="base_link"
+             bin_x="${scrap_bin_x}" bin_y="${scrap_bin_y}" bin_z="0.0"
+             bin_color="scrap_bin" width="0.5" depth="0.6" height="0.3"/>
+
+</robot>

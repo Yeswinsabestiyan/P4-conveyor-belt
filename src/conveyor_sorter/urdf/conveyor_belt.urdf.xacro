@@ -1,0 +1,81 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="conveyor_belt">
+
+  <!-- All geometry is expressed in the world/base_link frame (links sit at the origin). -->
+  <xacro:macro name="conveyor_belt" params="belt_length belt_width belt_height belt_ground_clearance parent_link">
+
+    <link name="conveyor_base">
+      <visual>
+        <origin xyz="${belt_length/2} 0 ${belt_ground_clearance - belt_height/2}" rpy="0 0 0"/>
+        <geometry><box size="${belt_length} ${belt_width} ${belt_height}"/></geometry>
+        <material name="belt_black"/>
+      </visual>
+      <!-- belt surface -->
+      <visual>
+        <origin xyz="${belt_length/2} 0 ${belt_ground_clearance + 0.0025}" rpy="0 0 0"/>
+        <geometry><box size="${belt_length} ${belt_width - 0.04} 0.005"/></geometry>
+        <material name="belt_grey"/>
+      </visual>
+      <!-- side rails -->
+      <visual>
+        <origin xyz="${belt_length/2} ${belt_width/2 - 0.01} ${belt_ground_clearance + 0.03}" rpy="0 0 0"/>
+        <geometry><box size="${belt_length} 0.02 0.06"/></geometry>
+        <material name="support_metal"/>
+      </visual>
+      <visual>
+        <origin xyz="${belt_length/2} ${-(belt_width/2 - 0.01)} ${belt_ground_clearance + 0.03}" rpy="0 0 0"/>
+        <geometry><box size="${belt_length} 0.02 0.06"/></geometry>
+        <material name="support_metal"/>
+      </visual>
+      <!-- legs -->
+      <visual><origin xyz="0.2 ${belt_width/2 + 0.04} ${belt_ground_clearance/2}"/><geometry><cylinder radius="0.03" length="${belt_ground_clearance}"/></geometry><material name="support_metal"/></visual>
+      <visual><origin xyz="0.2 ${-(belt_width/2 + 0.04)} ${belt_ground_clearance/2}"/><geometry><cylinder radius="0.03" length="${belt_ground_clearance}"/></geometry><material name="support_metal"/></visual>
+      <visual><origin xyz="1.5 ${belt_width/2 + 0.04} ${belt_ground_clearance/2}"/><geometry><cylinder radius="0.03" length="${belt_ground_clearance}"/></geometry><material name="support_metal"/></visual>
+      <visual><origin xyz="1.5 ${-(belt_width/2 + 0.04)} ${belt_ground_clearance/2}"/><geometry><cylinder radius="0.03" length="${belt_ground_clearance}"/></geometry><material name="support_metal"/></visual>
+      <visual><origin xyz="2.8 ${belt_width/2 + 0.04} ${belt_ground_clearance/2}"/><geometry><cylinder radius="0.03" length="${belt_ground_clearance}"/></geometry><material name="support_metal"/></visual>
+      <visual><origin xyz="2.8 ${-(belt_width/2 + 0.04)} ${belt_ground_clearance/2}"/><geometry><cylinder radius="0.03" length="${belt_ground_clearance}"/></geometry><material name="support_metal"/></visual>
+    </link>
+
+    <joint name="conveyor_base_joint" type="fixed">
+      <parent link="${parent_link}"/>
+      <child link="conveyor_base"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+    </joint>
+
+    <!-- Colour-sensor gantries (match sensor1_x / sensor2_x in the YAML) -->
+    <xacro:camera_gantry name="cam1" x="0.45" belt_width="${belt_width}" z0="${belt_ground_clearance}"/>
+    <xacro:camera_gantry name="cam2" x="1.45" belt_width="${belt_width}" z0="${belt_ground_clearance}"/>
+
+  </xacro:macro>
+
+  <xacro:macro name="camera_gantry" params="name x belt_width z0">
+    <link name="${name}_gantry">
+      <visual>
+        <origin xyz="${x} ${belt_width/2 + 0.05} ${z0 + 0.25}" rpy="0 0 0"/>
+        <geometry><box size="0.04 0.04 0.5"/></geometry>
+        <material name="support_metal"/>
+      </visual>
+      <visual>
+        <origin xyz="${x} ${-(belt_width/2 + 0.05)} ${z0 + 0.25}" rpy="0 0 0"/>
+        <geometry><box size="0.04 0.04 0.5"/></geometry>
+        <material name="support_metal"/>
+      </visual>
+      <visual>
+        <origin xyz="${x} 0 ${z0 + 0.5}" rpy="0 0 0"/>
+        <geometry><box size="0.05 ${belt_width + 0.14} 0.04"/></geometry>
+        <material name="support_metal"/>
+      </visual>
+      <visual>
+        <origin xyz="${x} 0 ${z0 + 0.44}" rpy="0 0 0"/>
+        <geometry><box size="0.08 0.10 0.08"/></geometry>
+        <material name="gripper_black"/>
+      </visual>
+    </link>
+    <joint name="${name}_gantry_joint" type="fixed">
+      <parent link="conveyor_base"/>
+      <child link="${name}_gantry"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+    </joint>
+  </xacro:macro>
+
+</robot>

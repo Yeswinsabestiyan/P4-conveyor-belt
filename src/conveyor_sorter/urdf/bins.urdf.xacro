@@ -1,0 +1,95 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="bins">
+
+  <!-- Bin Macro -->
+  <xacro:macro name="bin" params="bin_name parent_link bin_x bin_y bin_z bin_color width:=0.45 depth:=0.45 height:=0.3">
+    <link name="${bin_name}_base">
+      <visual>
+        <origin xyz="0 0 0.02" rpy="0 0 0"/>
+        <geometry>
+          <box size="${width} ${depth} 0.04"/>
+        </geometry>
+        <material name="${bin_color}"/>
+      </visual>
+      <collision>
+        <origin xyz="0 0 0.02" rpy="0 0 0"/>
+        <geometry>
+          <box size="${width} ${depth} 0.04"/>
+        </geometry>
+      </collision>
+    </link>
+
+    <joint name="${bin_name}_base_joint" type="fixed">
+      <parent link="${parent_link}"/>
+      <child link="${bin_name}_base"/>
+      <origin xyz="${bin_x} ${bin_y} ${bin_z}" rpy="0 0 0"/>
+    </joint>
+
+    <!-- Bin walls relative to bin_base -->
+    <!-- Front wall (+y) -->
+    <link name="${bin_name}_wall_front">
+      <visual>
+        <origin xyz="0 ${depth/2} ${height/2}" rpy="0 0 0"/>
+        <geometry>
+          <box size="${width} 0.02 ${height}"/>
+        </geometry>
+        <material name="${bin_color}"/>
+      </visual>
+    </link>
+    <joint name="${bin_name}_wall_front_joint" type="fixed">
+      <parent link="${bin_name}_base"/>
+      <child link="${bin_name}_wall_front"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+    </joint>
+
+    <!-- Back wall (-y) -->
+    <link name="${bin_name}_wall_back">
+      <visual>
+        <origin xyz="0 ${-depth/2} ${height/2}" rpy="0 0 0"/>
+        <geometry>
+          <box size="${width} 0.02 ${height}"/>
+        </geometry>
+        <material name="${bin_color}"/>
+      </visual>
+    </link>
+    <joint name="${bin_name}_wall_back_joint" type="fixed">
+      <parent link="${bin_name}_base"/>
+      <child link="${bin_name}_wall_back"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+    </joint>
+
+    <!-- Left wall (-x) -->
+    <link name="${bin_name}_wall_left">
+      <visual>
+        <origin xyz="${-width/2} 0 ${height/2}" rpy="0 0 0"/>
+        <geometry>
+          <box size="0.02 ${depth} ${height}"/>
+        </geometry>
+        <material name="${bin_color}"/>
+      </visual>
+    </link>
+    <joint name="${bin_name}_wall_left_joint" type="fixed">
+      <parent link="${bin_name}_base"/>
+      <child link="${bin_name}_wall_left"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+    </joint>
+
+    <!-- Right wall (+x) -->
+    <link name="${bin_name}_wall_right">
+      <visual>
+        <origin xyz="${width/2} 0 ${height/2}" rpy="0 0 0"/>
+        <geometry>
+          <box size="0.02 ${depth} ${height}"/>
+        </geometry>
+        <material name="${bin_color}"/>
+      </visual>
+    </link>
+    <joint name="${bin_name}_wall_right_joint" type="fixed">
+      <parent link="${bin_name}_base"/>
+      <child link="${bin_name}_wall_right"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+    </joint>
+
+  </xacro:macro>
+
+</robot>

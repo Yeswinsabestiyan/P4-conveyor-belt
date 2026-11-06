@@ -1,0 +1,147 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="robot_arm">
+
+  <!--
+    3-DOF arm + 2-finger gripper. Geometry is mirrored 1:1 by
+    conveyor_sorter/kinematics.py  (l2 = 0.45, l3 = 0.30 forearm + 0.12 gripper = 0.42).
+    Base is NOT rotated: joint1 angle is the world yaw of the arm.
+  -->
+  <xacro:macro name="robot_arm" params="arm_name parent_link x y base_z link_color gripper_color">
+
+    <!-- Pedestal: floor -> base_z -->
+    <link name="${arm_name}_base">
+      <visual>
+        <origin xyz="0 0 ${base_z/2}" rpy="0 0 0"/>
+        <geometry><cylinder radius="0.09" length="${base_z}"/></geometry>
+        <material name="arm_dark_grey"/>
+      </visual>
+      <visual>
+        <origin xyz="0 0 0.01" rpy="0 0 0"/>
+        <geometry><box size="0.3 0.3 0.02"/></geometry>
+        <material name="arm_dark_grey"/>
+      </visual>
+    </link>
+    <joint name="${arm_name}_base_joint" type="fixed">
+      <parent link="${parent_link}"/>
+      <child link="${arm_name}_base"/>
+      <origin xyz="${x} ${y} 0" rpy="0 0 0"/>
+    </joint>
+
+    <!-- Joint 1: yaw -->
+    <link name="${arm_name}_link1">
+      <visual>
+        <origin xyz="0 0 0.125" rpy="0 0 0"/>
+        <geometry><cylinder radius="0.06" length="0.25"/></geometry>
+        <material name="${link_color}"/>
+      </visual>
+    </link>
+    <joint name="${arm_name}_joint1" type="revolute">
+      <parent link="${arm_name}_base"/>
+      <child link="${arm_name}_link1"/>
+      <origin xyz="0 0 ${base_z}" rpy="0 0 0"/>
+      <axis xyz="0 0 1"/>
+      <limit lower="-3.14" upper="3.14" effort="20" velocity="3.0"/>
+    </joint>
+
+    <!-- Joint 2: shoulder pitch (positive = arm tilts down) -->
+    <link name="${arm_name}_link2">
+      <visual>
+        <origin xyz="0 0 0" rpy="1.5708 0 0"/>
+        <geometry><cylinder radius="0.05" length="0.09"/></geometry>
+        <material name="arm_dark_grey"/>
+      </visual>
+      <visual>
+        <origin xyz="0.225 0 0" rpy="0 0 0"/>
+        <geometry><box size="0.45 0.07 0.07"/></geometry>
+        <material name="${link_color}"/>
+      </visual>
+    </link>
+    <joint name="${arm_name}_joint2" type="revolute">
+      <parent link="${arm_name}_link1"/>
+      <child link="${arm_name}_link2"/>
+      <origin xyz="0 0 0.25" rpy="0 0 0"/>
+      <axis xyz="0 1 0"/>
+      <limit lower="-3.14" upper="3.14" effort="20" velocity="3.0"/>
+    </joint>
+
+    <!-- Joint 3: elbow pitch (positive = forearm folds down) -->
+    <link name="${arm_name}_link3">
+      <visual>
+        <origin xyz="0 0 0" rpy="1.5708 0 0"/>
+        <geometry><cylinder radius="0.04" length="0.08"/></geometry>
+        <material name="arm_dark_grey"/>
+      </visual>
+      <visual>
+        <origin xyz="0.15 0 0" rpy="0 0 0"/>
+        <geometry><box size="0.30 0.055 0.055"/></geometry>
+        <material name="${link_color}"/>
+      </visual>
+    </link>
+    <joint name="${arm_name}_joint3" type="revolute">
+      <parent link="${arm_name}_link2"/>
+      <child link="${arm_name}_link3"/>
+      <origin xyz="0.45 0 0" rpy="0 0 0"/>
+      <axis xyz="0 1 0"/>
+      <limit lower="-3.14" upper="3.14" effort="15" velocity="3.0"/>
+    </joint>
+
+    <!-- Gripper body -->
+    <link name="${arm_name}_gripper_base">
+      <visual>
+        <origin xyz="0.03 0 0" rpy="0 0 0"/>
+        <geometry><box size="0.06 0.13 0.05"/></geometry>
+        <material name="${gripper_color}"/>
+      </visual>
+    </link>
+    <joint name="${arm_name}_gripper_base_joint" type="fixed">
+      <parent link="${arm_name}_link3"/>
+      <child link="${arm_name}_gripper_base"/>
+      <origin xyz="0.30 0 0" rpy="0 0 0"/>
+    </joint>
+
+    <!-- Fingers (open = 0.03, closed = 0.0; closed gap fits the 0.1 m box) -->
+    <link name="${arm_name}_gripper_finger1">
+      <visual>
+        <origin xyz="0.045 0 0" rpy="0 0 0"/>
+        <geometry><box size="0.09 0.012 0.04"/></geometry>
+        <material name="${gripper_color}"/>
+      </visual>
+    </link>
+    <joint name="${arm_name}_gripper_finger1_joint" type="prismatic">
+      <parent link="${arm_name}_gripper_base"/>
+      <child link="${arm_name}_gripper_finger1"/>
+      <origin xyz="0.06 0.056 0" rpy="0 0 0"/>
+      <axis xyz="0 1 0"/>
+      <limit lower="0" upper="0.03" effort="10" velocity="0.5"/>
+    </joint>
+
+    <link name="${arm_name}_gripper_finger2">
+      <visual>
+        <origin xyz="0.045 0 0" rpy="0 0 0"/>
+        <geometry><box size="0.09 0.012 0.04"/></geometry>
+        <material name="${gripper_color}"/>
+      </visual>
+    </link>
+    <joint name="${arm_name}_gripper_finger2_joint" type="prismatic">
+      <parent link="${arm_name}_gripper_base"/>
+      <child link="${arm_name}_gripper_finger2"/>
+      <origin xyz="0.06 -0.056 0" rpy="0 0 0"/>
+      <axis xyz="0 -1 0"/>
+      <limit lower="0" upper="0.03" effort="10" velocity="0.5"/>
+    </joint>
+
+    <!-- Tool tip: grasp point (box centre is held here) -->
+    <link name="${arm_name}_tool_tip">
+      <visual>
+        <geometry><sphere radius="0.012"/></geometry>
+        <material name="box_red"/>
+      </visual>
+    </link>
+    <joint name="${arm_name}_tool_tip_joint" type="fixed">
+      <parent link="${arm_name}_gripper_base"/>
+      <child link="${arm_name}_tool_tip"/>
+      <origin xyz="0.12 0 0" rpy="0 0 0"/>
+    </joint>
+
+  </xacro:macro>
+</robot>

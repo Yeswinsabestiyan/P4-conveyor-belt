@@ -1,0 +1,98 @@
+# Conveyor Sorter simulation parameters (SI units: m, s, rad)
+# Layout: belt runs +X from x=0 to x=belt_length at height 0.5 m.
+#   arm1 (red)  stands on the +Y side, red bin  beside it
+#   arm2 (blue) stands on the -Y side, blue bin beside it
+#   scrap bin at the end of the belt
+
+box_spawner:
+  ros__parameters:
+    spawn_rate: 0.5            # mean boxes / second
+    min_spawn_interval: 1.2    # s  (also auto-clamped so boxes never overlap)
+    max_spawn_interval: 3.0    # s
+    red_prob: 0.35
+    blue_prob: 0.35
+    black_prob: 0.30
+    box_size: 0.1
+    spawn_x: 0.0
+    spawn_y: 0.0
+    spawn_z: 0.555             # belt top (0.505) + half box
+    belt_speed: 0.15
+    belt_length: 3.0
+    red_bin_x: 0.8
+    red_bin_y: 0.75
+    blue_bin_x: 1.8
+    blue_bin_y: -0.75
+    scrap_bin_x: 3.25
+    scrap_bin_y: 0.0
+    bin_floor_z: 0.04
+    max_boxes_per_bin: 18
+
+conveyor:
+  ros__parameters:
+    belt_speed: 0.15
+    belt_length: 3.0
+    belt_width: 0.4
+    belt_ground_clearance: 0.5
+    update_rate: 20.0
+
+color_sensor:
+  ros__parameters:
+    sensor1_x: 0.45
+    sensor2_x: 1.45
+    sensor_width: 0.1
+    belt_surface_z: 0.505
+    belt_speed: 0.15
+    update_rate: 50.0
+
+arm1:
+  ros__parameters:
+    arm_name: "arm1"
+    target_color: "red"
+    sensor_num: 1
+    base_x: 0.8
+    base_y: 0.35
+    base_z: 0.5
+    link2_length: 0.45
+    link3_length: 0.42
+    shoulder_h: 0.25
+    bin_x: 0.8
+    bin_y: 0.75
+    drop_z: 0.50
+    box_z: 0.555
+    hover: 0.12
+    reach_time: 1.0
+    descend_time: 0.4
+    place_time: 1.0
+    return_time: 1.0
+    home_joints: [0.0, -0.9, 1.5]
+    belt_speed: 0.15
+    update_rate: 50.0
+
+arm2:
+  ros__parameters:
+    arm_name: "arm2"
+    target_color: "blue"
+    sensor_num: 2
+    base_x: 1.8
+    base_y: -0.35
+    base_z: 0.5
+    link2_length: 0.45
+    link3_length: 0.42
+    shoulder_h: 0.25
+    bin_x: 1.8
+    bin_y: -0.75
+    drop_z: 0.50
+    box_z: 0.555
+    hover: 0.12
+    reach_time: 1.0
+    descend_time: 0.4
+    place_time: 1.0
+    return_time: 1.0
+    home_joints: [0.0, -0.9, 1.5]
+    belt_speed: 0.15
+    update_rate: 50.0
+
+stats_display:
+  ros__parameters:
+    update_rate: 10.0
+    text_scale: 0.07

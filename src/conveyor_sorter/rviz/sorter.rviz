@@ -1,0 +1,204 @@
+Panels:
+  - Class: rviz_common/Displays
+    Help Height: 0
+    Name: Displays
+    Property Tree Widget:
+      Expanded:
+        - /Global Options1
+        - /RobotModel1
+      Splitter Ratio: 0.5
+    Tree Height: 400
+  - Class: rviz_common/Views
+    Expanded:
+      - /Current View1
+    Name: Views
+    Splitter Ratio: 0.5
+  - Class: rviz_common/Time
+    Experimental: false
+    Name: Time
+    SyncMode: 0
+    SyncSource: ""
+Visualization Manager:
+  Class: ""
+  Displays:
+    - Alpha: 0.5
+      Cell Size: 0.5
+      Class: rviz_default_plugins/Grid
+      Color: 160; 160; 164
+      Enabled: true
+      Line Style:
+        Line Width: 0.029999999329447746
+        Value: Lines
+      Name: Grid
+      Normal Cell Count: 0
+      Offset:
+        X: 1.5
+        Y: 0
+        Z: 0
+      Plane: XY
+      Plane Cell Count: 14
+      Reference Frame: <Fixed Frame>
+      Value: true
+    - Alpha: 1
+      Class: rviz_default_plugins/RobotModel
+      Collision Enabled: false
+      Description File: ""
+      Description Source: Topic
+      Description Topic:
+        Depth: 5
+        Durability Policy: Transient Local
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Value: /robot_description
+      Enabled: true
+      Links:
+        All Links Enabled: true
+        Expand Joint Details: false
+        Expand Link Details: false
+        Expand Tree: false
+        Link Tree Style: Links in Alphabetic Order
+      Mass Properties:
+        Inertia: false
+        Mass: false
+      Name: RobotModel
+      TF Prefix: ""
+      Update Interval: 0
+      Value: true
+      Visual Enabled: true
+    - Class: rviz_default_plugins/MarkerArray
+      Enabled: true
+      Name: Belt Stripes
+      Namespaces:
+        {}
+      Topic:
+        Depth: 100
+        Durability Policy: Volatile
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Value: /conveyor/belt_markers
+      Value: true
+    - Class: rviz_default_plugins/MarkerArray
+      Enabled: true
+      Name: Boxes
+      Namespaces:
+        {}
+      Topic:
+        Depth: 100
+        Durability Policy: Volatile
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Value: /conveyor/boxes_markers
+      Value: true
+    - Class: rviz_default_plugins/MarkerArray
+      Enabled: true
+      Name: Sensor Zones
+      Namespaces:
+        {}
+      Topic:
+        Depth: 100
+        Durability Policy: Volatile
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Value: /conveyor/sensor_markers
+      Value: true
+    - Class: rviz_default_plugins/MarkerArray
+      Enabled: true
+      Name: Arm1 Markers
+      Namespaces:
+        {}
+      Topic:
+        Depth: 100
+        Durability Policy: Volatile
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Value: /arm1/markers
+      Value: true
+    - Class: rviz_default_plugins/MarkerArray
+      Enabled: true
+      Name: Arm2 Markers
+      Namespaces:
+        {}
+      Topic:
+        Depth: 100
+        Durability Policy: Volatile
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Value: /arm2/markers
+      Value: true
+    - Class: rviz_default_plugins/MarkerArray
+      Enabled: true
+      Name: Stats and Labels
+      Namespaces:
+        {}
+      Topic:
+        Depth: 100
+        Durability Policy: Volatile
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Value: /conveyor/stats_markers
+      Value: true
+    - Class: rviz_default_plugins/TF
+      Enabled: false
+      Frame Timeout: 15
+      Frames:
+        All Enabled: false
+      Marker Scale: 0.3
+      Name: TF
+      Show Arrows: false
+      Show Axes: true
+      Show Names: false
+      Tree:
+        {}
+      Update Interval: 0
+      Value: false
+  Enabled: true
+  Global Options:
+    Background Color: 48; 48; 48
+    Fixed Frame: world
+    Frame Rate: 30
+  Name: root
+  Tools:
+    - Class: rviz_default_plugins/Interact
+      Hide Inactive Objects: true
+    - Class: rviz_default_plugins/MoveCamera
+    - Class: rviz_default_plugins/Select
+  Transformation:
+    Current:
+      Class: rviz_default_plugins/TF
+  Value: true
+  Views:
+    Current:
+      Class: rviz_default_plugins/Orbit
+      Distance: 4.8
+      Enable Stereo Rendering:
+        Stereo Eye Separation: 0.05999999865889549
+        Stereo Focal Distance: 1
+        Swap Stereo Eyes: false
+        Value: false
+      Focal Point:
+        X: 1.6
+        Y: 0
+        Z: 0.6
+      Focal Shape Fixed Size: false
+      Focal Shape Size: 0.05000000074505806
+      Invert Z Axis: false
+      Name: Current View
+      Near Clip Distance: 0.009999999776482582
+      Pitch: 0.6
+      Target Frame: <Fixed Frame>
+      Value: Orbit (rviz)
+      Yaw: 5.4
+    Saved: ~
+Window Geometry:
+  Displays:
+    collapsed: false
+  Height: 900
+  Hide Left Dock: false
+  Hide Right Dock: true
+  Time:
+    collapsed: false
+  Views:
+    collapsed: false
+  Width: 1400
+  X: 60
+  Y: 40
