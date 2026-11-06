@@ -1,4 +1,4 @@
-# Conveyor Sorter - ROS 2 Kinematic Simulation 📦🤖
+# Conveyor Sorter - ROS 2 Kinematic Simulation 
 
 An autonomous two-arm robotic conveyor sorting system simulated in **ROS 2** and visualized in **RViz2**.
 
